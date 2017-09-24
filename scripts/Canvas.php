@@ -13,9 +13,9 @@ if (count($argv) < 2) {
     exit;
 }
 
-if (file_exists('.atlas/config.php')) {
+if (file_exists('.canvas/config.php')) {
     /* Guess a config path */
-    $config = include('.atlas/config.php'); 
+    $config = include('.canvas/config.php'); 
 }
 
 if (isset($argv[2])) {
