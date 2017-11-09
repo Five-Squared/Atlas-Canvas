@@ -1,26 +1,36 @@
 <?php
-require_once(realpath(__DIR__) . '/../src/Canvas/File/Model.php');
-require_once(realpath(__DIR__) . '/../src/Canvas/File/Entity.php');
-require_once(realpath(__DIR__) . '/../src/Canvas/File/Mapper.php');
-require_once(realpath(__DIR__) . '/../src/Canvas/File/Query.php');
-require_once(realpath(__DIR__) . '/../src/Canvas/File/Named.php');
-require_once(realpath(__DIR__) . '/../src/Canvas/File/Collection.php');
-require_once(realpath(__DIR__) . '/../src/Canvas/File/Relation.php');
-require_once(realpath(__DIR__) . '/../src/Canvas/Writer.php');
+require_once(realpath(__DIR__) . '/../src/File/Model.php');
+require_once(realpath(__DIR__) . '/../src/File/Entity.php');
+require_once(realpath(__DIR__) . '/../src/File/Mapper.php');
+require_once(realpath(__DIR__) . '/../src/File/Query.php');
+require_once(realpath(__DIR__) . '/../src/File/Named.php');
+require_once(realpath(__DIR__) . '/../src/File/Collection.php');
+require_once(realpath(__DIR__) . '/../src/File/Relation.php');
+require_once(realpath(__DIR__) . '/../src/Writer.php');
 
-if (count($argv) < 2) {
-    echo "Usage: {$argv[0]} <model> [config]\n";
+if (count($argv) < 3) {
+    echo "Usage: {$argv[0]} <model> <table> [columns] [config]\n";
     exit;
 }
 
-if (file_exists('.canvas/config.php')) {
+if (file_exists('.atlas/canvas.php')) {
     /* Guess a config path */
-    $config = include('.canvas/config.php'); 
+    $config = include('.atlas/canvas.php'); 
 }
 
 if (isset($argv[2])) {
     /* A config path was provided */
-    $config = include($argv[2]); 
+    $table = $argv[2];
+}
+
+if (isset($argv[3])) {
+    /* A config path was provided */
+    $columns = explode(',', $argv[3]); 
+}
+
+if (isset($argv[4])) {
+    /* A config path was provided */
+    $config = include($argv[4]); 
 }
 
 if (!isset($config)) {
@@ -42,8 +52,8 @@ if (!is_dir("{$config['canvas']['path']}/{$model}")) {
 
 $files = array(
     new Canvas\File\Model($config['canvas']['namespace'], $model),
-    new Canvas\File\Entity($config['canvas']['namespace'], $model),
-    new Canvas\File\Mapper($config['canvas']['namespace'], $model),
+    new Canvas\File\Entity($config['canvas']['namespace'], $model, $columns),
+    new Canvas\File\Mapper($config['canvas']['namespace'], $model, $table, $columns),
     new Canvas\File\Collection($config['canvas']['namespace'], $model),
     new Canvas\File\Query($config['canvas']['namespace'], $model),
     new Canvas\File\Named($config['canvas']['namespace'], $model),

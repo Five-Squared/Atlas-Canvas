@@ -7,10 +7,16 @@ class Entity
 
     protected $_model;
 
-    public function __construct($namespace, $model)
+    protected $_columns = array('id');
+
+    public function __construct($namespace, $model, $columns = null)
     {
         $this->_namespace = $namespace;
         $this->_model = $model;
+
+        if ($columns) {
+            $this->_columns = $columns;
+        }
     }
 
     public function getRelativePath()
@@ -30,8 +36,17 @@ class Entity
 
     public function getProperties()
     {
-        return array(
-        );
+        $properties = array();
+        
+        foreach ($this->_columns as $value) {
+            array_push($properties, array(
+                'type'  => 'protected', 
+                'name'  => '_' . $value, 
+                'value' => 'null'
+            ));
+        }
+
+        return $properties;
     } 
 
     public function getMethods()

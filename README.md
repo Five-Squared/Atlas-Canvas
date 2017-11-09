@@ -4,9 +4,7 @@ Script to quickly create boilerplate classes for new Atlas models.
 ### Using Canvas ###
 The atlas repo ships with a script to quickly create boilerplate classes for new models.
 ```
-php vendor/fivesqrd/atlas/scripts/Canvas.php User
-php vendor/fivesqrd/atlas/scripts/Canvas.php Customer
-php vendor/fivesqrd/atlas/scripts/Canvas.php Contact
+php vendor/fivesqrd/atlas/scripts/Canvas.php User users id,email,password,lastLogin
 ```
 
 Edit the Mapper class and update the table details 
@@ -30,23 +28,6 @@ class Mapper extends \Atlas\Model\Mapper
     );
 
     protected $_readOnly = array('id');
-}
-```
-
-Edit the Entity class and create the mapped properties 
-```
-<?php
-namespace Application\Model\User;
-
-class Entity extends \Atlas\Model\Entity
-{
-    protected $_id;
-    
-    protected $_email;
-    
-    protected $_password;
-    
-    protected $_lastLogin;
 }
 ```
 
@@ -85,7 +66,7 @@ php composer.phar require fivesqrd/atlas-canvas
 Configure canvas to remember project specific settings, such as path to model classes and namespace:
 ```
 cd /myproject
-mkdir .canvas
-cp vendor/fivesqrd/atlas-canvas/scripts/.canvas/config.php .canvas/config.php
+mkdir .atlas
+cp vendor/fivesqrd/atlas-canvas/scripts/.atlas/canvas.php .atlas/canvas.php
 vi .canvas/config.php
 ```
